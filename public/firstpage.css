@@ -38,11 +38,11 @@ body, html{
 	text-align:center;
 	font-size: 32px;
 	font-family: Arial black;
-	color:green;
+	color:#F4A950;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 .rowh{
-	background-color: blue;
+	background-color: #161B21;
 	padding:;
 }
 .row:after {
