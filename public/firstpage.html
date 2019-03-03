@@ -1,40 +1,480 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <title>Moving the Chains</title>
+
     <link rel="stylesheet" href="firstpage.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+
+
 <body>
+    <div class="step" id="start">
 <div class="row rowh">
     <h1 class="marg"> Moving the Chains </h1>
     <p>Our websites personalize a nutritional plan for football players looking to achieve the same octane performance
         that professionals put out on the big stage. Enter in your personal stats for the site to develop a pre-game
         plan for you!
     </p>
-	<!--fdklsjafld-->
+    <!--fdklsjafld-->
 </div>
-<div class="row">
-   <a> <div class="column" id="column1"> </a>
+    </div>
+
+
+<div class="row" >
+
+
+    <div class="column" id="column1">
         <div class="row">
+            <div class="step" id="receiver">
             <div class="columnh">
                 WIDE RECEIVER
             </div>
         </div>
-    </div>
-  <a>  <div class="column" id="column2"> </a>
+        </div></div>
+
+    <div class="step" id="quarterback">
+   <div class="column" id="column2">
         <div class="row">
             <div class="columnh">
                 QUARTERBACK
             </div>
         </div>
-    </div>
- <a>   <div class="column" id="column3"> </a>
+        </div></div>
+
+    <div class="step" id="tackler">
+   <div class="column" id="column3">
         <div class="row">
-            <div class="columnh">
+            <div class="columnh" onClick="">
                 LINEBACKER
             </div>
+       </div></div>
+         </div>
+</div>
+
+
+
+    <div class="step" id="next">
+    <h2>Insert Physical Info:</h2>
+        <ul>
+
+           <li> Age: </li> <li><input id="age" type="number" name = "age"/></li>
+             <li> Gender: </li> <li><input id="gender" type="text" name = "gender"/></li>
+             <li> Height: </li> <li><input id="height" type="number" name = "height"/></li>
+             <li> Weight: </li> <li><input id="weight" type="number" name = "weight"/></li>
+            <li> <button type="button" onClick="onSubmit()">submit</button></li>
+
+              <div>
+            </div>
+        </ul>
+    </div>
+
+
+    <div class="step" id="last">
+     <div class="row">
+        <div class="column">
+            <h1>Your Nutrition Plan</h1>
+            <table style="background-color:tan; border-style:solid; border-radius:25px; opacity:0.8; margin:auto;">
+                <tr>
+                    <td><h2>Total Calories per day</h2></td>
+                    <td id="calories"><h2 name="calories"><script>document.getElementById("electrolytes").nodeValue</script></h2></td>
+                </tr>
+                <tr>
+                    <td><h2>Protein (cal)</h2></td>
+                    <td id="protein"></td>
+                </tr>
+                <tr>
+                    <td><h2>Carbs (cal)</h2></td>
+                    <td id="carbs"></td>
+                </tr>
+                <tr>
+                    <td><h2>Fat (cal)</h2></td>
+                    <td id="fat"></td>
+                </tr>
+                <tr>
+                    <td><h2>Electrolytes (oz)</h2></td>
+                    <td id="electrolytes"></td>
+                </tr>
+                <tr>
+                    <td><h2>Fluids (oz)</h2></td>
+                    <td id="fluids"></td>
+                </tr>
+                <tr>
+                    <td><h2>Duration (wks)</h2></td>
+                    <td id="duration"></td>
+                </tr>
+                <tr>
+                    <td><h2>Fitness Burn (cals)</h2><td>
+                    <td id="burn"><td>
+                </tr>
+                </table>
+            <p id="test"> value </p>
+        </div>
+        <div class="column">
+            <h1>Your Exercise Plan</h1>
+            <table style="background-color:darkkhaki; border-style:solid; border-radius:25px;">
+            </table>
         </div>
     </div>
-</div>
+    </div>
+
+        <script>
+
+        //Basal caloric daily allowance
+var basalIntake = 0;
+
+//Actual caloric daily allowance
+var activeIntake = 0;
+
+var calorieGain = 0;
+var calorieLoss = 0;
+        var age = 0;
+        var gender = "male";
+        var height = 0;
+        var weight = 0;
+        var planStatus = "gainWeight";
+
+//Receiver/Tackler fitness multiplier (based on Harris Benedict Formula) 1.73
+//Quarterback fitness multiplier (based on Harris Benedict Formula) 1.55
+
+//On Submit Method////////////////////////////////////////////////////////////////////////////////////////////
+function onSubmit()
+{
+    age = document.getElementById("age").nodeValue;
+    gender = document.getElementById("gender").nodeValue;
+    height = document.getElementById("height").nodeValue;
+    weight = document.getElementById("weight").nodeValue;
+    planStatus = "gainWeight";
+
+    document.getElementById("test").appendChild("strawberry");
+
+    gender = "male";
+    age = 30;
+    weight = 50;
+    height = 50;
+    footballPosition="quarterback";
+       var  totalCalories = 50;
+    var proteinCalories = 50;
+    var carbCalories = 50;
+    var fatCalories = 50,
+    var fitnessBurn = 0;
+    var electrolytes = 50;
+    var fluids = 50;
+    var duration = 50;
+
+    if(gender == "male")
+        {
+            calculateMaleBMR(basalIntake);
+        }
+    else if(gender == "female")
+        {
+            calculateFemaleBMR(basalIntake);
+        }
+
+
+    if(footballPosition == "quarterback")
+    {
+    calculateModerateIntake(basalIntake,activeIntake);
+    }
+    else if((footballPosition == "receiver") || (footballPosition = "tackler"))
+        {
+            calculateActiveIntake(basalIntake,activeIntake);
+        }
+
+
+    calculateBMI(BMI,weight,height);
+
+    if(footballPosition == "quarterback")
+        {
+            quarterbackComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus);
+        }
+    else if (footballPosition == "reciever")
+        {
+            receiverComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus);
+        }
+    else if(footballPosition == "tackler")
+        {
+            tacklerComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus);
+        }
+
+
+if(footballPosition=="quarterback" && planStatus=="weightLoss")
+        {
+    document.getElementById('calories').innerHTML = activeIntake - 200;
+    document.getElementById('protein').innerHTML = activeIntake - 200)*0.20;
+    document.getElementById('carbs').innerHTML = (activeIntake-200)*0.50;
+    document.getElementById('fat').innerHTML = (activeIntake-200)*0.30;
+    document.getElementById('burn').innerHTML = 800;
+    document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML = calorieLoss/1000;
+        }
+
+else if(footballPosition=="quarterback" && planStatus=="weightGain"){
+    document.getElementById('calories').innerHTML =activeIntake + 200;
+    document.getElementById('protein').innerHTML =(activeIntake + 200)*0.30;
+   document.getElementById('carbs').innerHTML = (activeIntake - 200)*0.40;
+    document.getElementById('fat').innerHTML = (activeIntake - 200)*0.40;
+    document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('burn').innerHTML = 0;
+   document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML =calorieGain/(activeIntake + 1000);
+}
+
+//extra 250 calories per day of protein with 30 percent protein/
+//50 percent carbs/ 20 percent fat
+else if(footballPosition=="receiver" && planStatus=="weightLoss"){
+    document.getElementById('calories').innerHTML =activeIntake - 200;
+    document.getElementById('protein').innerHTML =(activeIntake - 200)*0.25;
+    document.getElementById('carbs').innerHTML = (activeIntake-200)*0.50;
+    document.getElementById('fat').innerHTML = (activeIntake-200)*0.25;
+    document.getElementById('burn').innerHTML = 800;
+    document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML =calorieLoss/1000;
+}
+
+else if(footballPosition=="receiver" && planStatus=="weightGain"){
+    document.getElementById('calories').innerHTML =activeIntake + 200;
+    document.getElementById('protein').innerHTML =(activeIntake + 200)*0.30;
+    document.getElementById('carbs').innerHTML = (activeIntake - 200)*0.45;
+    document.getElementById('fat').innerHTML = (activeIntake - 200)*0.35;
+   document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('burn').innerHTML = 0;
+    document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML =calorieGain/(activeIntake + 1000);
+}
+
+//extra 300 calories per day of protein with 30 percent protein/
+//40 percent carbs/ 30 percent fat
+else if(footballPosition=="tackler" && planStatus=="weightLoss"){
+    document.getElementById('calories').innerHTML =activeIntake - 200;
+    document.getElementById('protein').innerHTML =(activeIntake - 200)*0.25;
+    document.getElementById('carbs').innerHTML = (activeIntake - 200)*0.25;
+    document.getElementById('fat').innerHTML = (activeIntake-200)*0.30;
+    document.getElementById('burn').innerHTML = 800;
+    document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML =calorieLoss/1000;
+}
+
+else if (footballPosition=="tackler" && planStatus=="weightGain") {
+    document.getElementById('calories').innerHTML =activeIntake + 200;
+    document.getElementById('protein').innerHTML =(activeIntake + 200)*0.35;
+    document.getElementById('carbs').innerHTML = (activeIntake - 200)*0.35;
+    document.getElementById('fat').innerHTML = (activeIntake - 200)*0.40;
+    document.getElementById('electrolytes').innerHTML =  5;
+    document.getElementById('burn').innerHTML =  0;
+    document.getElementById('fluids').innerHTML = weight/2;
+    document.getElementById('duration').innerHTML =calorieGain/(activeIntake + 1000);
+}
+
+}//end onSubmit Method//////////////////////////////////////////////////////////////////
+
+function calculateMaleBMR(basalIntake) {
+  basalIntake =  66 + (user.weight * 6.2) + (12.7 * user.height) - (6.76 * user.age);
+    return basalIntake;
+}
+
+function calculateFemaleBMR(basalIntake){
+    basalIntake = 655 + (4.35 * user.weight) + (4.7 * user.height) - (4.7 * user.age);
+    return basalIntake;
+}
+
+//For receivers and tacklers
+function calculateActiveIntake(basalIntake, activeIntake){
+    activeIntake = basalIntake * 1.73;
+    return activeIntake
+}
+
+function calculateModerateIntake(basalIntake, activeIntake){
+    activeIntake = basalIntake * 1.55;
+    return activeIntake;
+}
+
+function calculateBMI(a,b,c){
+    a = (b * 0.45);
+    var d = c * 0.025;
+    d = Math.pow(d,2);
+    a = a/d;
+    return a;
+}
+
+
+//Tackler BMI: 36 +/- 0.6
+//Quarterback BMI: 27.9 +/- 0.6
+//Receiver BMI: 29 +/- 3.0
+
+// 1 gram of carbs = 4 calories (kilocalories) 50 - 60 percent daily
+// 1 gram of protein = 4 calories (kilocalories) 12 - 20 percent daily
+// 1 gram of fat = 9 calories (kilcalories) 30 percent daily
+
+//20 percent increase in calories for muscle gain
+
+
+//1.4 to 1.7 g of protein (or 0.63 to 0.77 g per pound) per kg of body weight //per day
+//0.4 pounds of muscle per week
+
+
+
+//calories to be lost per day = 1000 calories with 100 calories in protein //gained
+//calories to be gained 290 calories in protein per day
+
+//Calorie Shift functions
+function quarterbackComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus){
+ var quarterbackBMI = 28;
+    var neededWeight = user.weight;
+    var weightLoss = 0;
+    var weightGain = 0;
+
+
+    if(BMI > (quarterbackBMI + 0.6)){
+           //weight loss and mild muscle gain
+            neededWeight = (quarterbackBMI * (Math.pow((height * 0.025),2)))/0.45;
+            //number of lbs to be gained
+            weightLoss = weight - neededWeight;
+            //calories to be gained
+            calorieGain = weightLoss * 3500;
+        planStatus="weightGain";
+            return calorieGain;
+        }
+
+    else if (BMI < (quarterbackBMI - 0.6)){
+            //muscle gain
+            neededWeight = (quarterbackBMI * (Math.pow((height * 0.025),2)))/0.45 ;
+            //number of lbs to be lost
+             weightGain = neededWeight - weight;
+            //calories to be lost
+            calorieLoss = weightGain * 3500;
+        planStatus="weightLoss";
+            return calorieLoss;
+        }
+}
+
+
+function tacklerComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus){
+
+    var tacklerBMI = 36;
+    var neededWeight = weight;
+    var weightLoss = 0;
+    var weightGain = 0;
+
+
+    if(BMI > (tacklerBMI + 0.6)){
+           //weight loss and mild muscle gain
+            neededWeight = (tacklerBMI * (Math.pow((height * 0.025),2)))/0.45;
+            //number of lbs to be gained
+            weightLoss = weight - neededWeight;
+            //calories to be gained
+            calorieGain = weightLoss * 3500;
+            planStatus = "weightGain";
+            return calorieGain;
+
+        }
+    else if (BMI < (tacklerBMI - 0.6)){
+            //muscle gain
+            neededWeight = (tacklerBMI * (Math.pow((height * 0.025),2)))/0.45 ;
+            //number of lbs to be lost
+             weightGain = neededWeight - weight;
+            //calories to be lost
+            calorieLoss = weightGain * 3500;
+        planStatus="weightLoss";
+            return calorieLoss;
+
+        }
+}
+
+function receiverComparison(weight, height, calorieLoss, calorieGain,BMI,planStatus){
+    var receiverBMI = 29;
+    var neededWeight = weight;
+    var weightLoss = 0;
+    var weightGain = 0;
+
+
+    if(BMI > (receiverBMI + 3)){
+           //weight loss and mild muscle gain
+            neededWeight = (receiverBMI * (Math.pow((height * 0.025),2)))/0.45;
+            //number of lbs to be gained
+            weightLoss = weight - neededWeight;
+            //calories to be gained
+            calorieGain = weightLoss * 3500;
+        planStatus="weightGain";
+            return calorieGain;
+
+        }
+    else if (BMI < (receiverBMI - 3)){
+            //muscle gain
+            neededWeight = (receiverBMI * (Math.pow((height * 0.025),2)))/0.45 ;
+            //number of lbs to be lost
+             weightGain = neededWeight - weight;
+            //calories to be lost
+            calorieLoss = weightGain * 3500;
+            planStatus="weightLoss";
+            return calorieLoss;
+        }
+
+}
+
+//muscle gain for qb to be 0.5 g/lb =>weight gain of
+//muscle for receiver or tackler to be 0.8 g/lb => muscle gain
+//0.36 grams of protein per pound per day or 1.44 calories per pound as //standard for maintenance of muscle
+
+//duration = calorieLoss/7000 or calorieGain
+//extra 200 calories of protein per day with 25 percent protein/
+//55 percent carbs/ 20 percent fat
+
+$(document).ready(function(){
+    $('start').hide();
+    $('#quarterback').hide();
+    $('#receiver').hide();
+    $('#tackler').hide();
+
+
+
+    $('#quarterback').click(function(){
+        footballPosition="quarterback";
+        $('#start').hide();
+        $('#quarterback').hide();
+        $('#receiver').hide();
+        $('#tackler').hide();
+        $('#next').show();
+        });
+
+        $('#receiver').click(function(){
+        footballPosition="receiver";
+        $('#start').hide();
+                $('#quarterback').hide();
+    $('#receiver').hide();
+    $('#tackler').hide();
+        $('#next').show();
+    });
+
+        $('#tackler').click(function(){
+          footballPosition = "tackler";
+        $('#start').hide();
+                $('#quarterback').hide();
+    $('#receiver').hide();
+    $('#tackler').hide();
+        $('#next').show();
+    });
+
+    $('#next').click(function(){
+        $('#next').hide();
+        $('last').show();
+    });
+});
+
+
+    </script>
+
 </body>
+<<<<<<< HEAD
+
+
+
+
+    </html>
+=======
 </html>
+>>>>>>> 144a3fac7d7f795d27dfaeee623ee119c3441ec7
